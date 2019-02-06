@@ -12,9 +12,7 @@ var abi = JSON.stringify(abi_import);
 
 console.log(abi.entry);
 
-const componentDidMount = async () => {
-  state = { methods: "" };
-};
+
 // var abi = require("./abi.json");
 // var payload = 0;
 // console.log(Json.string(abi.inputs) + " " + abi);
@@ -45,9 +43,12 @@ const ButtonGroup = styled.div`
 `;
 
 const getItems = () => {
-  let temp = this.getAllMethods(abi_import);
+  let temp = getAllMethods(abi_import);
   var items = [];
-  items.push(new DropDownItem("Item 1", 1));
+  for(var i=0;i<temp.length;i++){
+    items.push(new DropDownItem(temp[i], i));
+  }
+ 
   items.push(new DropDownItem("Item 2", 2));
   //for (var i = 0; i < temp.length; i++) {items.push(temp[i],i)}
   return items;
@@ -73,7 +74,7 @@ const getAllMethods = abi => {
     object.push(n);
     console.log(n);
   }
-  this.setState({ methods: object });
+  return object
 };
 const getItems2 = () => {
   let items = [];
