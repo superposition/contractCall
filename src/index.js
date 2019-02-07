@@ -7,35 +7,11 @@ import DropdownButton, {
   DropDownItem
 } from "./DropdownButton";
 
-
-
-console.log(JSON.stringify(abi_import));
+//console.log(JSON.stringify(abi_import));
 var abi = JSON.stringify(abi_import);
-
-
 const uuidv4 = require('uuid/v4');
 var fs = require('browserify-fs');
 
-function readFiles(dirname) {
-    return new Promise((resolve, reject) => {
-        fs.readdir(dirname, function(err, filenames) {
-            if (err) return reject(err);
-            promiseAllP(filenames,
-            (filename,index,resolve,reject) =>  {
-                fs.readFile(path.resolve(dirname, filename), 'utf-8', function(err, content) {
-                    if (err) return reject(err);
-                    return resolve({filename: filename, contents: content});
-                });
-            })
-            .then(results => {
-                return resolve(results);
-            })
-            .catch(error => {
-                return reject(error);
-            });
-        });
-  });
-}
 
 const ButtonGroup = styled.div`
   font-family: sans-serif;
@@ -103,6 +79,17 @@ const getFunctions = () => {
   let items = [];
 
   items.push(new DropDownItem("wow",uuidv4()));
+
+  fs.readdir('./', function(err, it) {
+      console.log(it);
+      //console.log("get in my belly");
+   
+      for (var i=0; i<it.length; i++) {
+          console.log(it[i]);
+          console.log("get in my belly");
+      }
+  });
+
 
 /*  fs.readdir("./", function(err, fsdir) {
       for (var i=0; i<items.length; i++) {
