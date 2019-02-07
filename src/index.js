@@ -81,8 +81,8 @@ const getFunctions = () => {
 };
 
 const handleAction = item => console.log("item selected", item);
-
-var fs.readdir("./", function(err, items) {
+/*
+fs.readdir("./", function(err, items) {
     console.log(items);
 
     for (var i=0; i<items.length; i++) {
@@ -90,7 +90,7 @@ var fs.readdir("./", function(err, items) {
     }
 });
 
-
+*/
 const App = () => (
   <ButtonGroup>
     <DropdownButton items={getFunctions()} onSelect={handleAction}>
