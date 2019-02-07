@@ -40,8 +40,8 @@ const getItems = () => {
   var items = [];
   for(var i=0;i<temp.length;i++){
     items.push(new DropDownItem(temp[i], i));
-  }
- 
+  
+} 
   items.push(new DropDownItem("Item 2", 2));
   //for (var i = 0; i < temp.length; i++) {items.push(temp[i],i)}
   return items;
@@ -82,6 +82,15 @@ const getFunctions = () => {
 
 const handleAction = item => console.log("item selected", item);
 
+var fs.readdir("./", function(err, items) {
+    console.log(items);
+
+    for (var i=0; i<items.length; i++) {
+        console.log(items[i]);
+    }
+});
+
+
 const App = () => (
   <ButtonGroup>
     <DropdownButton items={getFunctions()} onSelect={handleAction}>
@@ -116,3 +125,33 @@ render(<App />, document.getElementById("root"));
 //             "stateMutability": "view",
 //               "type": "function"
 // },
+/*
+
+
+function readFiles(dirname, onFileContent, onError) {
+  fs.readdir(dirname, function(err, filenames) {
+    if (err) {
+      onError(err);
+      return;
+    }
+    filenames.forEach(function(filename) {
+      fs.readFile(dirname + filename, 'utf-8', function(err, content) {
+        if (err) {
+          onError(err);
+          return;
+        }
+        onFileContent(filename, content);
+      });
+    });
+  });
+}
+Here's the storing part:
+
+var data = {};
+readFiles('dirname/', function(filename, content) {
+  data[filename] = content;
+}, function(err) {
+  throw err;
+});
+
+*/
