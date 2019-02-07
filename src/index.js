@@ -1,15 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 import { render } from "react-dom";
-import abi_import from "./abi.json";
+import abi_import from "./abi/abi.json";
 import DropdownButton, {
   DropDownButtonWrapper,
   DropDownItem
 } from "./DropdownButton";
 
+
+
 console.log(JSON.stringify(abi_import));
 var abi = JSON.stringify(abi_import);
-console.log(abi.entry);
+
+
+const uuidv4 = require('uuid/v4');
+var fs = require('browserify-fs');
+
+function readFiles(dirname) {
+    return new Promise((resolve, reject) => {
+        fs.readdir(dirname, function(err, filenames) {
+            if (err) return reject(err);
+            promiseAllP(filenames,
+            (filename,index,resolve,reject) =>  {
+                fs.readFile(path.resolve(dirname, filename), 'utf-8', function(err, content) {
+                    if (err) return reject(err);
+                    return resolve({filename: filename, contents: content});
+                });
+            })
+            .then(results => {
+                return resolve(results);
+            })
+            .catch(error => {
+                return reject(error);
+            });
+        });
+  });
+}
 
 const ButtonGroup = styled.div`
   font-family: sans-serif;
@@ -23,6 +49,7 @@ const ButtonGroup = styled.div`
     margin-left: 2rem;
   }
 `;
+
 const Papaya = styled.input`
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -39,10 +66,10 @@ const getItems = () => {
   let temp = getAllMethods(abi_import);
   var items = [];
   for(var i=0;i<temp.length;i++){
-    items.push(new DropDownItem(temp[i], i));
+    items.push(new DropDownItem(temp[i], uuidv4()));
   
-} 
-  items.push(new DropDownItem("Item 2", 2));
+  } 
+  //items.push(new DropDownItem("Item 2", 2));
   //for (var i = 0; i < temp.length; i++) {items.push(temp[i],i)}
   return items;
 };
@@ -64,7 +91,6 @@ const getAllMethods = abi => {
   var object = [];
 
   for (var i = 0; i < abi.abi.length; i++) {
-    console.log("ajsdfosajpfeoijwepoijf");
     n = abi.abi[i].name;
     object.push(n);
     console.log(n);
@@ -73,14 +99,25 @@ const getAllMethods = abi => {
 };
 
 const getFunctions = () => {
+
   let items = [];
-  items.push(new DropDownItem("Item 3", 1));
-  items.push(new DropDownItem("Item 4", 2));
+
+  items.push(new DropDownItem("wow",uuidv4()));
+
+/*  fs.readdir("./", function(err, fsdir) {
+      for (var i=0; i<items.length; i++) {
+        items.push(new DropDownItem("wow",uuidv4())); //fsdir[i], uuidv4()));, uuidv4()));
+        console.log("wow");
+        console.log(fsdir[i]);
+      }
+  });
+*/
 
   return items;
 };
 
 const handleAction = item => console.log("item selected", item);
+
 /*
 fs.readdir("./", function(err, items) {
     console.log(items);
@@ -91,6 +128,8 @@ fs.readdir("./", function(err, items) {
 });
 
 */
+
+
 const App = () => (
   <ButtonGroup>
     <DropdownButton items={getFunctions()} onSelect={handleAction}>
@@ -98,7 +137,7 @@ const App = () => (
     </DropdownButton>
 
     <DropdownButton items={getItems()} onSelect={handleAction}>
-      Functions
+      getItems
     </DropdownButton>
 
     <Papaya />
