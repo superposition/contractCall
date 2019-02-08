@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 import { render } from "react-dom";
 import abi_import from "./abi/abi.json";
 import DropdownButton, {
@@ -11,7 +12,7 @@ import DropdownButton, {
 var abi = JSON.stringify(abi_import);
 const uuidv4 = require('uuid/v4');
 var fs = require('browserify-fs');
-
+var dir = require('node-dir');
 
 const ButtonGroup = styled.div`
   font-family: sans-serif;
@@ -19,8 +20,6 @@ const ButtonGroup = styled.div`
   display: flex;
   padding: 0.5em;
   min-width: 250px;
-
-
   & > ${DropDownButtonWrapper} + ${DropDownButtonWrapper} {
     margin-left: 2rem;
   }
@@ -77,44 +76,25 @@ const getAllMethods = abi => {
 const getFunctions = () => {
 
   let items = [];
-
   items.push(new DropDownItem("wow",uuidv4()));
-
-  fs.readdir('./', function(err, it) {
-      console.log(it);
-      //console.log("get in my belly");
-   
-      for (var i=0; i<it.length; i++) {
-          console.log(it[i]);
-          console.log("get in my belly");
-      }
-  });
-
-
-/*  fs.readdir("./", function(err, fsdir) {
-      for (var i=0; i<items.length; i++) {
-        items.push(new DropDownItem("wow",uuidv4())); //fsdir[i], uuidv4()));, uuidv4()));
-        console.log("wow");
-        console.log(fsdir[i]);
-      }
-  });
-*/
+  console.log("wow")
+  console.log("wow")
+  dir.readFiles('./',
+      function(err, content, next) {
+          if (err) throw err;
+          console.log('content:', content);
+          next();
+      },
+      function(err, files){
+          if (err) throw err;
+          console.log('finished reading files:', files);
+      });
 
   return items;
 };
 
 const handleAction = item => console.log("item selected", item);
 
-/*
-fs.readdir("./", function(err, items) {
-    console.log(items);
-
-    for (var i=0; i<items.length; i++) {
-        console.log(items[i]);
-    }
-});
-
-*/
 
 
 const App = () => (
@@ -134,6 +114,7 @@ const App = () => (
 render(<App />, document.getElementById("root"));
 
 
+
 // var payload = 0;
 // console.log(Json.string(abi.inputs) + " " + abi);
 
@@ -151,33 +132,7 @@ render(<App />, document.getElementById("root"));
 //             "stateMutability": "view",
 //               "type": "function"
 // },
-/*
 
 
-function readFiles(dirname, onFileContent, onError) {
-  fs.readdir(dirname, function(err, filenames) {
-    if (err) {
-      onError(err);
-      return;
-    }
-    filenames.forEach(function(filename) {
-      fs.readFile(dirname + filename, 'utf-8', function(err, content) {
-        if (err) {
-          onError(err);
-          return;
-        }
-        onFileContent(filename, content);
-      });
-    });
-  });
-}
-Here's the storing part:
 
-var data = {};
-readFiles('dirname/', function(filename, content) {
-  data[filename] = content;
-}, function(err) {
-  throw err;
-});
 
-*/
