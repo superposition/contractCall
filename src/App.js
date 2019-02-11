@@ -23,22 +23,21 @@ const Main = styled.main`
   grid-template-rows: repeat(12, 1fr);
   border: solid 2px red;
 `;
+
 class App extends Component {
   state={name:"display this here"}
   render() {
     return (
       <div className="App">
-        <React.Fragment>
           <GlobalStyle />
           <Main>
             <Header>Header</Header>
             <Content>Content</Content>
             <Sidebar>
-              
             </Sidebar>
             <Footer>Footer</Footer>
           </Main>
-        </React.Fragment>
+        
       </div>
     );
   }
