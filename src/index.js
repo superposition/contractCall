@@ -14,31 +14,31 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Main = styled.main`
-
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(12, 1fr);
   border: solid 2px red;
+  background-color: cream;
 `;
 
 const Sidebar = styled.div`
   grid-area: h;
   border: solid 1px blue;
-  grid-area: 1/1/1/18;
+  grid-area: 3/1/5/5;
   padding: 15px;
-  text-align: right;
+  text-align: left;
 `;
 
 const Header = styled.div`
-  grid-area: h;
+  grid-area: header;
   border: solid 1px blue;
   grid-area: 1/1/1/18;
   padding: 15px;
-  text-align: right;
+  text-align: left;
 `;
 
 const Content = styled.div`
-  grid-area: 2/1/15/16;
+  grid-area: 3/5/8/14;
   border: solid 2px indigo;
   padding: 15px;
   backgroundcolor: pink;
@@ -48,7 +48,7 @@ const Footer = styled.div`
   grid-area: footer;
   border: solid 2px green;
   padding: 15px;
-  grid- area: 12 / 2 / 13 / 7;
+  grid- area: 1 / 2 / 2 / 2;
 `;
 
 
@@ -61,17 +61,19 @@ function App() {
         <Header>Header</Header>
         <Content>Content</Content>
         <Sidebar>
+        Sidebar
         </Sidebar>
-        <Footer>Footer</Footer>
+      
       </Main>
     </React.Fragment>
   )
-  
+ 
 }
-
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+//<Footer>Footer</Footer>
