@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import Select from 'react-select'
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -51,6 +51,16 @@ const Footer = styled.div`
   grid- area: 1 / 2 / 2 / 2;
 `;
 
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+]
+
+const FileSelect = () => (
+  <Select options={options} />
+)
+
 
 function App() {
   
@@ -59,9 +69,11 @@ function App() {
       <GlobalStyle />
       <Main>
         <Header>Header</Header>
-        <Content>Content</Content>
+        <Content>
+        Content
+        </Content>
         <Sidebar>
-        Sidebar
+        <FileSelect />
         </Sidebar>
       
       </Main>
