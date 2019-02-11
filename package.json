@@ -1,6 +1,6 @@
 {
-	"name": "example",
-	"version": "1.0.0",
+	"name": "contractCall",
+	"version": "0.1.0",
 	"description": "Building and Publishing a React Based Electron App From Scratch",
 	"private": false,
 	"author": "John May",
@@ -37,7 +37,7 @@
 		"version-bump-prompt": "^4.1.0"
 	},
 	"build": {
-		"appId": "com.your-domain",
+		"appId": "com.blockchaindads",
 		"compression": "normal",
 		"productName": "Example",
 		"directories": {
