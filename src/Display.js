@@ -65,7 +65,8 @@ class Display extends Component {
     functions:[{value:'Send',label:'send'}],
     selectedAccount:"0x",
     selectedContract:"No Contract Selcted",
-    selectedFunction:"No Function Selcted" 
+    selectedFunction:"No Function Selcted",
+    password:'' 
      }
 
 
@@ -75,6 +76,7 @@ class Display extends Component {
       this.setState({optionSelected:1})
    }
    if(event.value=='Upload Account'){
+     console.log("option 2")
     this.setState({optionSelected:2})
    }
    if(event.value=='Unlock Account'){
@@ -95,18 +97,12 @@ class Display extends Component {
     
   }  
   render() {
-   var mainView=(<div><h1>An error has occured</h1></div>)
+   console.log(this.state.optionSelected)
+   var mainView=null
    if(this.state.optionSelected==1){
      mainView=(<div  data-tid="container">
-     <h2>Balehu</h2>
-     <br/><br/>
-     Account:<br /><br/>
-     <Select
-             value={this.selectedAccount}
-             onChange={this.handleAccount}
-             options={this.state.accounts}
-           />
-     <br/>
+     <h2>Call Contract Function</h2>
+    
      ABI:<br /><br/>
      <Select
              value={this.selectedContract}
@@ -127,14 +123,43 @@ class Display extends Component {
   </div>)
    } 
    if(this.state.optionSelected==2){
-     
+    mainView=(
+    <div>
+      <h3>upload a new private key</h3>
+    <input type='file'/>
+    <h3>Enter a Key Password</h3>
+    <input type='text'/>
+    </div>)
+    console.log("changing mainview") 
    } 
    if(this.state.optionSelected==3){
+    mainView=(
+      <div>
+        <br/><br/>
+     Select Account:<br /><br/>
+     <Select
+             value={this.selectedAccount}
+             onChange={this.handleAccount}
+             options={this.state.accounts}
+           />
+      <br/>
+      <h3>Enter your Password</h3>
+      <input type='text'/>
+      </div>)
      
    } 
   if(this.state.optionSelected==4){
-     
-  } 
+    mainView=(
+      <div>
+        <h3>upload the contract ABI</h3>
+      <input type='file'/>
+      <h3>Enter the contract Address</h3>
+      <input type='text'/>
+      </div>)
+      console.log("changing mainview") 
+     } 
+   
+  console.log(mainView)
     return (
       <React.Fragment>
         
