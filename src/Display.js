@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select'
 import styled, { createGlobalStyle } from "styled-components";
 
-var {remote} = require('electron');
-var fs = remote.require('fs');
-//Border is for debugging visually
+var fs = require('browserify-fs');
 //  border: solid 1px blue;
 
 const Sidebar = styled.div`
@@ -82,7 +80,7 @@ class Display extends Component {
   componentDidMount(){
 
     fs.readdir('.', function(err, items) {
-        console.log(items);
+        console.log("items: " + items);
 
         for (var i=0; i<items.length; i++) {
             console.log(items[i]);
