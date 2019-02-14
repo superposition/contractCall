@@ -4,6 +4,7 @@ import './index.css';
 //import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Select from 'react-select'
+import Display from "./Display"
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -16,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 const Main = styled.main`
   display: grid;
   grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(20, 1fr);
   border: solid 2px red;
   background-color: cream;
 `;
@@ -38,7 +39,7 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-  grid-area: 3/5/8/14;
+  grid-area: 3/5/20/20;
   border: solid 2px indigo;
   padding: 15px;
   backgroundcolor: pink;
@@ -52,9 +53,9 @@ const Footer = styled.div`
 `;
 
 const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
+  { value: 'My Contracts', label: 'My Contracts' },
+  { value: 'Upload Account', label: 'Upload Account' },
+  { value: 'Add New Contract', label: 'Add New Contract' }
 ]
 
 const FileSelect = () => (
@@ -83,19 +84,15 @@ const customStyles = {
 function App() {
   
   return (
-    <React.Fragment>
-      <GlobalStyle />
-      <Main>
-        <Header>Header</Header>
-        <Content>
-        Content
-        </Content>
-        <Sidebar>
-        <FileSelect styles={customStyles} />
-        </Sidebar>
+    
+     
+       
+        
+        <Display/>
+       
       
-      </Main>
-    </React.Fragment>
+      
+   
   )
  
 }
@@ -104,6 +101,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
 
 //<Footer>Footer</Footer>
