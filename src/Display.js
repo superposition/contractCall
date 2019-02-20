@@ -82,10 +82,14 @@ class Display extends Component {
     console.log(fs)
     //let data = fs.fSync('/home/john/BalehuCode/contractCall/src/abi.json', 'utf8')
     //console.log(data)
-    fs.readdir('/home/john/BalehuCode/contractCall/src/abi', function(err, items) {
-        console.log("items: " + items[0]);
-        
-      
+    fs.readdir('./src/abi',(err, items)=> {
+      console.log("items: " + items[0].slice(0, -5));
+      let temp = []
+      for (var i = 0; i < items.length; i++) {
+        temp[i] = { value: items[i].slice(0, -5), label: items[i].slice(0, -5) }
+      }
+      console.log(temp)
+      this.setState({contracts:temp})
     });
 
     
