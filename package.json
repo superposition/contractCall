@@ -1,11 +1,11 @@
 {
-  "name": "snippetfu",
-  "description": "SnippetFu lets you save and quickly copy snippets of text to the clipboard",
+  "name": "contractCall",
+  "description": "Ethereum Contract Management System",
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
-  "author": "Hariharan Srinath",
-  "license": "GPL-3.0-only",
+  "author": "Eric Manganaro John May",
+  "license": "none",
   "homepage": "./",
   "dependencies": {
     "@material/react-button": "^0.9.2",
