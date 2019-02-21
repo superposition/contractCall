@@ -247,7 +247,8 @@ class Display extends Component {
   }
   handleViewFunction = (event) => {
     console.log(event.value)
-    let func=this.state.functionabi[event.value]
+    let func=this.state.viewfunctionABI[event.value]
+    console.log(func)
     this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
   }
 
@@ -308,7 +309,8 @@ class Display extends Component {
             onChange={this.handleViewFunction}
             options={this.state.getfunctions}
             styles={customStyles} />
-        
+        <br /><br />
+        {inputView2}
         </div>
       )
     }
