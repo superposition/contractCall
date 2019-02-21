@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="560px" height="560px" viewBox="0 0 560 560" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Wordmark/Stylized/Profile/Fill</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="-35.0523935%" y1="166.632373%" x2="108.187668%" y2="-8.7641733%" id="linearGradient-1">
+            <stop stop-color="#6C90EE" offset="0%"></stop>
+            <stop stop-color="#DA68D9" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Wordmark/Stylized/Profile/Fill" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.0467122396">
+        <path d="M279.577392,236 C226.558056,236 183.577392,193.019336 183.577392,140 C183.577392,86.980664 226.558056,44 279.577392,44 C332.596728,44 375.577392,86.980664 375.577392,140 C375.577392,193.019336 332.596728,236 279.577392,236 Z M156.175779,295 L402.977493,295 C464.770218,295 515.554652,343.758448 518.068933,405.5 L522.144991,505.593111 C522.36971,511.111384 518.078436,515.767 512.560162,515.991719 C512.424603,515.997239 512.288945,516 512.153273,516 L47,516 C41.4771525,516 37,511.522847 37,506 C37,505.864328 37.002761,505.72867 37.0082814,505.593111 L41.0843397,405.5 C43.5986204,343.758448 94.383055,295 156.175779,295 Z" id="Profile-Icon" fill="url(#linearGradient-1)"></path>
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="560px" height="560px" viewBox="0 0 560 560" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Wordmark/Stylized/Star/Fill</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="-35.0523935%" y1="166.632373%" x2="108.187668%" y2="-8.7641733%" id="linearGradient-1">
+            <stop stop-color="#6C90EE" offset="0%"></stop>
+            <stop stop-color="#DA68D9" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Wordmark/Stylized/Star/Fill" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.0467122396">
+        <path d="M279.5,2 C125.698375,2 1,126.698375 1,280.5 C1,434.301625 125.698375,559 279.5,559 C433.301625,559 558,434.301625 558,280.5 C558,126.698375 433.301625,2 279.5,2 Z M379.925,426 L279.5,372.299211 L179.075,425.976793 L199.108929,313.910627 L117,235.030342 L229.821429,219.458505 L279.5,117 L329.178571,219.458505 L442,235.030342 L359.891071,313.933834 L379.925,426 Z" id="Rewards-Icon" fill="url(#linearGradient-1)"></path>
+    </g>
+</svg>

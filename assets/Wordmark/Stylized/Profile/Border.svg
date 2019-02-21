@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320px" height="320px" viewBox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Wordmark/Stylized/Profile/Border</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#C96BDB" offset="0%"></stop>
+            <stop stop-color="#8583E8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Wordmark/Stylized/Profile/Border" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-dasharray="600">
+        <path d="M159.501524,137 C131.335002,137 108.501524,114.166522 108.501524,86 C108.501524,57.8334778 131.335002,35 159.501524,35 C187.668046,35 210.501524,57.8334778 210.501524,86 C210.501524,114.166522 187.668046,137 159.501524,137 Z M94.2104764,168 L224.791769,168 C257.783118,168 284.895371,194.035712 286.231339,227 L287.989942,270.392583 C288.325409,278.670059 281.887139,285.652229 273.609663,285.987696 C273.407294,285.995898 273.20478,286 273.002245,286 L46,286 C37.7157288,286 31,279.284271 31,271 C31,270.797465 31.004102,270.594951 31.0123036,270.392583 L32.7709065,227 C34.1068743,194.035712 61.2191277,168 94.2104764,168 Z" id="Profile-Icon" stroke="url(#linearGradient-1)" stroke-width="2.8"></path>
+    </g>
+</svg>

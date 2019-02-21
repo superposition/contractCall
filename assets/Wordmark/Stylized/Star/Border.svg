@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320px" height="320px" viewBox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Wordmark/Stylized/Star/Border</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#C96BDB" offset="0%"></stop>
+            <stop stop-color="#8583E8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Wordmark/Stylized/Star/Border" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-dasharray="600">
+        <path d="M159.521514,28.0215138 C86.9006388,28.0215138 28.0215138,86.9006388 28.0215138,159.521514 C28.0215138,232.142389 86.9006388,291.021514 159.521514,291.021514 C232.142389,291.021514 291.021514,232.142389 291.021514,159.521514 C291.021514,86.9006388 232.142389,28.0215138 159.521514,28.0215138 Z M207.162503,227.926134 L159.885503,202.552946 L112.608503,227.915169 L122.03986,174.964813 L83.3855029,137.694516 L136.49836,130.336949 L159.885503,81.9261344 L183.272646,130.336949 L236.385503,137.694516 L197.731146,174.975778 L207.162503,227.926134 Z" id="Rewards-Icon" stroke="url(#linearGradient-1)" stroke-width="2.8" transform="translate(159.521514, 159.521514) rotate(8.000000) translate(-159.521514, -159.521514) "></path>
+    </g>
+</svg>
