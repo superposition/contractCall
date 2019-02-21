@@ -100,12 +100,13 @@ class Display extends Component {
    
 
   }
-   SaveWallet(){
-  var buf=Buffer.from(this.state.privatekey,'hex')
-  var w= wallet.fromPrivateKey(buf)
+   SaveWallet=()=>{
+    var buf=Buffer.from(this.state.privatekey,'hex')
+    var w= wallet.fromPrivateKey(buf)
     let  address=w.getAddressString()
    let V3=w.toV3(this.state.password)
-   console.log(V3)
+   console.log(typeof(V3))
+  
    }
   CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
     const tx = new TX(null, 1);
@@ -196,9 +197,9 @@ class Display extends Component {
 
     files: '',
 
-    privatekey:'',
+    privatekey:''
 
-    passworkd:'',
+    
   }
 
   onSelcted = (event) => {
@@ -287,7 +288,14 @@ class Display extends Component {
 
     }
   }
-
+  handleChange = (fieldName, event) => {
+    const state = {
+      ...this.state,
+    };
+    state[fieldName] = event.target.value;
+    this.setState(state);
+    console.log(state)
+  };
 
   render() {
 
@@ -354,9 +362,12 @@ class Display extends Component {
       mainView = (
         <div>
           <h3>upload a new private key</h3>
-          <input type='file' />
+          <input type='text' value={this.state.privatekey} onChange={this.handleChange.bind(this,'privatekey')}/>
           <h3>Enter a Key Password</h3>
-          <input type='text' />
+          <input type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
+          <br /><br />
+          <button type="button" onClick={this.SaveWallet}>Save Wallet</button>
+        
         </div>)
       console.log("changing mainview")
     }
