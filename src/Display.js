@@ -5,8 +5,10 @@ import wallet from "ethereumjs-wallet"
 import TX from 'ethereumjs-tx'
 import { closestIndexTo } from 'date-fns';
 import back from './assets/Background/Gradient/Purple.svg'
+import logo from './assets/Wordmark/B/Gradient.svg'
 const path = window.require('path');
 const fs = window.require('fs');
+const imgWidth = 100
 
 //  border: solid 1px blue;
 const Contract_DIR = './src/abi';
@@ -395,7 +397,7 @@ class Display extends Component {
       <React.Fragment>
         <GlobalStyle />
         <Main>
-          <Header>Header</Header>
+          <Header> <img width={imgWidth} src={logo} alt={"logo-image"} /></Header>
           <Content>
             <div>
               {mainView}
