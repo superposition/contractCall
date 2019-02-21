@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import wallet from "ethereumjs-wallet"
 import TX from 'ethereumjs-tx'
 import { closestIndexTo } from 'date-fns';
+import back from './assets/Background/Gradient/Purple.svg'
 const path = window.require('path');
 const fs = window.require('fs');
 
@@ -26,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
 
 //border: solid 2px red;
 const Main = styled.main`
+background-image: url(${back});
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(20, 1fr);
