@@ -89,8 +89,19 @@ class Display extends Component {
 
   componentDidMount() {
     console.log(fs)
-    //let data = fs.fSync('/home/john/BalehuCode/contractCall/src/abi.json', 'utf8')
-    //console.log(data)
+    let wallets = fs.readFileSync('./src/wallets/accounts.json', 'utf8')
+    console.log(wallets)
+    wallets=JSON.parse(wallets)
+    console.log(wallets)
+   let  accountlist=[]
+    for(var i=0;i<wallets.accounts.length;i++){
+      console.log(wallets.accounts[i])
+      let temp="0x"+wallets.accounts[i].address
+      accountlist.push({"value":i,"label":temp})
+    }
+    console.log(accountlist)
+    this.setState({accounts:wallets,addresslist:accountlist})
+
     fs.readdir(Contract_DIR, (err, items) => {
       console.log("items: " + items[0].slice(0, -5));
       let temp = []
@@ -100,18 +111,42 @@ class Display extends Component {
       console.log(temp)
       this.setState({ contracts: temp })
     });
-   
-    
-   
+  } 
+
+  SaveWallet=()=>{
+    var buf=Buffer.from(this.state.privatekey,'hex')
+    var w= wallet.fromPrivateKey(buf)
+    let  address=w.getAddressString()
+    let Accounts=this.state.accounts
+    console.log(this.state.password)
+   let V3=w.toV3(this.state.password)
+   Accounts.accounts.push(V3)
+   this.setState({accounts:Accounts})
+   console.log(Accounts)
+   let V3String=JSON.stringify(Accounts)
+   const data = new Uint8Array(Buffer.from(V3String));
+fs.writeFile('./src/wallets/accounts.json', data, (err) => {
+  if (err) throw err;
+  console.log('The file has been saved!');
+});
+}
+  SaveContract=()=>{
+   let ABI=this.state.temporaryABI;
+   let address=this.state.TempAddress;
+  
+   let name=this.state.ContractSaveName
+   console.log(ABI)
+   ABI.address=address
+   console.log(ABI)
+   let StringABI=JSON.stringify(ABI)
+   const data = new Uint8Array(Buffer.from(StringABI));
+   let path='./src/abi/'+name+'.json'
+   fs.writeFile(path, data, (err) => {
+     if (err) throw err;
+     console.log('The file has been saved!');
+   });
 
   }
-   SaveWallet(){
-  var buf=Buffer.from(this.state.privatekey,'hex')
-  var w= wallet.fromPrivateKey(buf)
-    let  address=w.getAddressString()
-   let V3=w.toV3(this.state.password)
-   console.log(V3)
-   }
   CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
     const tx = new TX(null, 1);
     tx.nonce = nonce
@@ -132,12 +167,26 @@ class Display extends Component {
     const ret="0x"+tx.serialize().toString('hex')
     return ret
   }
-  SaveFile(event) {
+  SaveFile =async(event)=> {
     let file = event.target.files[0];
     console.log(file);
+    let f= new FileReader()
+    f.onload = this.onReaderLoad;
+    await f.readAsText(file)
+    
 
   }
+  onReaderLoad=(event)=>{
+    console.log(event.target.result);
+    var obj = JSON.parse(event.target.result);
+    let temp={"abi":'',"address":''}
+    temp.abi=obj.abi
+    console.log(obj.abi)
+    console.log(temp)
+    this.setState({temporaryABI:temp})
+    //alert_data(obj.name, obj.family);
 
+  }
   state = {
 
     name: "display this here",
@@ -171,7 +220,7 @@ class Display extends Component {
     contracts: [{
       value: 'Balehu',
       label: 'Contract 1'
-    }],
+         }],
 
     functions: [
       {
@@ -186,6 +235,8 @@ class Display extends Component {
     functionabi: [],
     viewfunctionABI: [],
     selectedAccount: "0x",
+
+    selectedID:'',
 
     selectedContract: "No Contract Selcted",
 
@@ -204,6 +255,13 @@ class Display extends Component {
     privatekey:'',
 
     passworkd:'',
+
+    addresslist:'',
+    addressmap:'',
+    temporaryABI:'',
+    ContractSaveName:'',
+    TempAddress:''
+    
   }
 
   onSelcted = (event) => {
@@ -237,6 +295,8 @@ class Display extends Component {
   }
 
   handleAccount = (event) => {
+    console.log(event)
+    this.setState({selectedAccount:event.label,selectedID:event.value})
   }
 
   handleFile = (event) => {
@@ -292,7 +352,29 @@ class Display extends Component {
 
     }
   }
+  handleChange = (fieldName, event) => {
+    const state = {
+      ...this.state,
+    };
+    state[fieldName] = event.target.value;
+    this.setState(state);
+    console.log(state)
+  };
+  AddAddress=()=>{
 
+  }
+  UnlockAccount=async()=>{
+   let index=this.state.selectedID
+   let password=this.state.password
+   let encryptedwallet=this.state.accounts.accounts[index]
+   console.log(encryptedwallet+ "wallet&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+   let w= await wallet.fromV3(encryptedwallet,password)
+   console.log(w.getPrivateKeyString())
+   this.setState({privatekey:w.getPrivateKeyString()},console.log(this.state))
+
+  }
+
+  
 
   render() {
 
@@ -359,11 +441,13 @@ class Display extends Component {
       mainView = (
         <div>
           <h3>upload a new private key</h3>
-          <input type='file' />
+          <input type='text' value={this.state.privatekey} onChange={this.handleChange.bind(this,'privatekey')}/>
           <h3>Enter a Key Password</h3>
-          <input type='text' />
+          <input type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
+          <br /><br />
+          <button type="button" onClick={this.SaveWallet}>Save Wallet</button>
+        
         </div>)
-      console.log("changing mainview")
     }
     if (this.state.optionSelected === 3) {
       mainView = (
@@ -371,14 +455,16 @@ class Display extends Component {
           <br /><br />
           Select Account:<br /><br />
           <Select
-            value={this.selectedAccount}
+            placeholder={this.state.selectedAccount}
             onChange={this.handleAccount}
-            options={this.state.accounts}
+            options={this.state.addresslist}
             styles={customStyles}
           />
           <br />
           <h3>Enter your Password</h3>
-          <input type='text' />
+          <input type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
+          <br /><br />
+          <button type="button" onClick={this.UnlockAccount}>Unlock</button>
         </div>)
 
     }
@@ -388,7 +474,10 @@ class Display extends Component {
           <h3>upload the contract ABI</h3>
           <input type='file' onChange={this.SaveFile} />
           <h3>Enter the contract Address</h3>
-          <input type='text' />
+          <input type='text' onChange={this.handleChange.bind(this,'TempAddress')}/>
+          <h3>Enter the contract Name</h3>
+          <input type='text' onChange={this.handleChange.bind(this,'ContractSaveName')}/>
+          <button type="button" onClick={this.SaveContract}>Save it</button>
         </div>)
       console.log("changing mainview")
     }
