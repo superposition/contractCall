@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select'
 import styled, { createGlobalStyle } from "styled-components";
 import wallet from "ethereumjs-wallet"
+import tx from './ethereumjs-tx'
 import { closestIndexTo } from 'date-fns';
 const path = window.require('path');
 const fs = window.require('fs');
@@ -94,10 +95,33 @@ class Display extends Component {
       console.log(temp)
       this.setState({ contracts: temp })
     });
+    var buf=Buffer.from('1D008288897FD807E81399FDF5436B085021690A2741CA2C5FA043F44E9CC4FD','hex')
+ var w= wallet.fromPrivateKey(buf)
 
+  console.log(w.getAddress)
 
   }
 
+  CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
+    const tx = new TX(null, 1);
+    tx.nonce = nonce
+    tx.gasPrice = gasPrice
+    tx.gasLimit = gasLimit
+    tx.value = value
+    // console.log(tx.gasPrice.toString('hex') + 'gasprice')
+    console.log(pk)
+      tx.to=to
+      // console.log('notcontract')
+    
+    if(data.length>2){  
+    tx.data = data
+    }
+    // const pk = Buffer.from(privateKey, 'hex')
+    console.log(tx)
+    tx.sign(pk)
+    const ret="0x"+tx.serialize().toString('hex')
+    return ret
+  }
   SaveFile(event) {
     let file = event.target.files[0];
     console.log(file);
@@ -250,6 +274,9 @@ class Display extends Component {
     let func=this.state.viewfunctionABI[event.value]
     console.log(func)
     this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
+    if(func.inputs.length==0){
+
+    }
   }
 
 
