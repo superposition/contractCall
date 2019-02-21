@@ -8,11 +8,12 @@ import back from './assets/Background/Gradient/Purple.svg'
 import logo from './assets/Wordmark/B/Gradient.svg'
 const path = window.require('path');
 const fs = window.require('fs');
-const imgWidth = 100
+const imgWidth = 75
 
 //  border: solid 1px blue;
 const Contract_DIR = './src/abi';
 const Wallet_DIR = './src/wallets'
+
 const Sidebar = styled.div`
   grid-area: sidebar;
   grid-area: 2/1/5/5;
@@ -46,7 +47,7 @@ const Content = styled.div`
 const Header = styled.div`
   grid-area: header;
   grid-area: 1/1/1/18;
-  padding: 15px;
+  padding: 45px;
   text-align: left;
 `;
 
