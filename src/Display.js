@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select'
 import styled, { createGlobalStyle } from "styled-components";
 import wallet from "ethereumjs-wallet"
-import tx from './ethereumjs-tx'
+import TX from 'ethereumjs-tx'
 import { closestIndexTo } from 'date-fns';
 const path = window.require('path');
 const fs = window.require('fs');
@@ -95,13 +95,18 @@ class Display extends Component {
       console.log(temp)
       this.setState({ contracts: temp })
     });
-    var buf=Buffer.from('1D008288897FD807E81399FDF5436B085021690A2741CA2C5FA043F44E9CC4FD','hex')
- var w= wallet.fromPrivateKey(buf)
-
-  console.log(w.getAddress)
+   
+    
+   
 
   }
-
+   SaveWallet(){
+  var buf=Buffer.from(this.state.privatekey,'hex')
+  var w= wallet.fromPrivateKey(buf)
+    let  address=w.getAddressString()
+   let V3=w.toV3(this.state.password)
+   console.log(V3)
+   }
   CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
     const tx = new TX(null, 1);
     tx.nonce = nonce
@@ -189,7 +194,11 @@ class Display extends Component {
 
     password: '',
 
-    files: ''
+    files: '',
+
+    privatekey:'',
+
+    passworkd:'',
   }
 
   onSelcted = (event) => {
