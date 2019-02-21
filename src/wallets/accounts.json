@@ -1,5 +1,1 @@
-{
-  "accounts":["0x"
-
-  ]  
-}
+{"accounts":[{"version":3,"id":"53648c84-6a64-4312-8409-89805551178e","address":"1aef962b032469b448dd69308904ed64b55f64bd","crypto":{"ciphertext":"b5ff7f305e24349a23ed5d4b1a23f88b98298a3c363952bdd21c94cf84411d0f","cipherparams":{"iv":"667522591af7e99283eabdc7288dc8ef"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"a999cfa61ae30dc08ac080bf1a71b989c3e924320d725a76ae58a764139ed787","n":262144,"r":8,"p":1},"mac":"7ac750987db766b3125c5eae24d235a4ee1ad17a85f58cdab1f84d617f659baf"}}]}
