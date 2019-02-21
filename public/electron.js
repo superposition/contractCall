@@ -1,165 +1,54 @@
-const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
-const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
+const url = require('url');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
 
-createWindow = () => {
-	mainWindow = new BrowserWindow({
-		backgroundColor: '#F7F7F7',
-		minWidth: 880,
-		show: false,
-		titleBarStyle: 'hidden',
-		webPreferences: {
-			nodeIntegration: false,
-			preload: __dirname + '/preload.js',
-		},
-		height: 860,
-		width: 1280,
-	});
+function createWindow() {
+    var display = electron.screen.getPrimaryDisplay();
+    const scrWidth = display.size.width;
+    const scrHeight = display.size.height;
 
-	mainWindow.loadURL(
-		isDev
-			? 'http://localhost:3000'
-			: `file://${path.join(__dirname, '../build/index.html')}`,
-	);
+    let winWidth = Math.floor(scrWidth/2)
+    let winHeight = Math.floor(scrHeight*3/4)
+    /*
+    if(isDev){
+        winWidth = 1200
+        winHeight = 600
+    }*/
 
-	if (isDev) {
-		const {
-			default: installExtension,
-			REACT_DEVELOPER_TOOLS,
-			REDUX_DEVTOOLS,
-		} = require('electron-devtools-installer');
+    mainWindow = new BrowserWindow({
+        width: winWidth, 
+        height: winHeight, 
+        x: scrWidth-winWidth-50,
+        y: scrHeight-winHeight-100,
+        resizable:false, 
+        fullscreenable:false,
+        title:"Contract Dash Board",
+        webPreferences: {
+            nodeIntegration: true,
+        }
+    });
+    mainWindow.setMenuBarVisibility(false)
+    mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+    mainWindow.on('closed', () => mainWindow = null);
+}
 
-		installExtension(REACT_DEVELOPER_TOOLS)
-			.then(name => {
-				console.log(`Added Extension: ${name}`);
-			})
-			.catch(err => {
-				console.log('An error occurred: ', err);
-			});
-
-		installExtension(REDUX_DEVTOOLS)
-			.then(name => {
-				console.log(`Added Extension: ${name}`);
-			})
-			.catch(err => {
-				console.log('An error occurred: ', err);
-			});
-	}
-	mainWindow.webContents.on('new-window', function(e, url) {
-		e.preventDefault();
-		mainWindow.loadURL(url)
-	  });
-	mainWindow.once('ready-to-show', () => {
-		mainWindow.show();
-
-		ipcMain.on('open-external-window', (event, arg) => {
-			shell.openExternal(arg);
-		});
-	});
-};
-
-
-generateMenu = () => {
-	const template = [
-		{
-			label: 'File',
-			submenu: [{ role: 'about' }, { role: 'quit' }],
-		},
-		{
-			label: 'Edit',
-			submenu: [
-				{ role: 'undo' },
-				{ role: 'redo' },
-				{ type: 'separator' },
-				{ role: 'cut' },
-				{ role: 'copy' },
-				{ role: 'paste' },
-				{ role: 'pasteandmatchstyle' },
-				{ role: 'delete' },
-				{ role: 'selectall' },
-			],
-		},
-		{
-			label: 'View',
-			submenu: [
-				{ role: 'reload' },
-				{ role: 'forcereload' },
-				{ role: 'toggledevtools' },
-				{ type: 'separator' },
-				{ role: 'resetzoom' },
-				{ role: 'zoomin' },
-				{ role: 'zoomout' },
-				{ type: 'separator' },
-				{ role: 'togglefullscreen' },
-			],
-		},
-		{
-			role: 'window',
-			submenu: [{ role: 'minimize' }, { role: 'close' }],
-		},
-		{
-			role: 'help',
-			submenu: [
-				{
-					click() {
-						require('electron').shell.openExternal(
-							'https://getstream.io/winds',
-						);
-					},
-					label: 'Learn More',
-				},
-				{
-					click() {
-						require('electron').shell.openExternal(
-							'https://github.com/GetStream/Winds/issues',
-						);
-					},
-					label: 'File Issue on GitHub',
-				},
-			],
-		},
-	];
-
-	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-};
-
-app.on('ready', () => {
-	createWindow();
-	generateMenu();
-});
+app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-	app.quit();
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
 
 app.on('activate', () => {
-	if (mainWindow === null) {
-		createWindow();
-	}
-});
-var myWindow = null;
-
-var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
-  // Someone tried to run a second instance, we should focus our window.
-  if (myWindow) {
-    if (myWindow.isMinimized()) myWindow.restore();
-    myWindow.focus();
-  }
-});
-
-if (shouldQuit) {
-  app.quit();
-  return;
-}
-
-// Create myWindow, load the rest of the app, etc...
-app.on('ready', function() {
-});
-
-ipcMain.on('load-page', (event, arg) => {
-	mainWindow.loadURL(arg);
+    if (mainWindow === null) {
+        createWindow();
+    }
 });
