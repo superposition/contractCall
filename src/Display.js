@@ -6,11 +6,11 @@ import Web3 from "web3"
 import { closestIndexTo } from 'date-fns';
 import back from './assets/Background/Gradient/Purple.svg'
 import logo from './assets/Wordmark/B/Gradient.svg'
-import {CallContractFunction ,SendWeb3Transaction} from './web3utils.js'
+import {CallContractFunction ,SendWeb3Transaction,FormatABI,formatOutputs} from './web3utils.js'
 const path = window.require('path');
 const fs = window.require('fs');
 const imgWidth = 100
-var web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/eQn7aKn7UEQua07HNh8s"))
+var web3 = new Web3(new Web3.providers.HttpProvider("https://balehu-chain.balehu.com"))
 //  border: solid 1px blue;
 const Contract_DIR = './src/abi';
 const Wallet_DIR = './src/wallets'
@@ -253,7 +253,9 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
 
     ViewInputArray:[],
     
-    UnlockedUserAddress:''
+    UnlockedUserAddress:'',
+
+    callResult:''
     
   }
 
@@ -338,12 +340,33 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     console.log(func.inputs)
     this.setState({ selectedFunction: event.value,selectedFunctionABI:func })
   }
-  handleViewFunction = (event) => {
+  handleViewFunction = async(event) => {
     console.log(event.value)
     let func=this.state.viewfunctionABI[event.value]
     console.log(func)
     this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
-    
+    if(func.inputs.length===0){
+      console.log("no inputs")
+      var funcName=func.name+"()"
+      
+     
+     var DATA=web3.eth.abi.encodeFunctionSignature(funcName)
+       
+     const transactionObject = {
+      to:this.state.selectedContractAddress,
+      DATA,
+     }
+    console.log(transactionObject)
+     var result=await web3.eth.call(transactionObject)
+     console.log(result)
+    if(typeof(result)==='string'){
+      let type=formatOutputs(func)
+      console.log(type[0])
+     result =web3.eth.abi.decodeParameter(type[0],result )
+    console.log(result)
+    this.setState({callResult:result})
+    }
+    }
   }
 
   handleChange = (fieldName, event) => {
@@ -360,13 +383,19 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
   let abi=this.state.selectedFunctionABI
   let Contract=this.state.selectedContractAddress
   let from=this.state.UnlockedUserAddress
-  SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
+  let f=FormatABI(abi)
+  //SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
   }
-  callFunction=()=>{
+  callFunction=async()=>{
   let inputs=this.state.ViewInputArray
   let abi=this.state.selectedViewFunctionABI
   let Contract=this.state.selectedContractAddress
-  CallContractFunction(abi,inputs,Contract,web3)
+  let f=FormatABI(abi)
+  let o=formatOutputs(abi)
+  console.log(f)
+  var R= await CallContractFunction(f,inputs,Contract,web3,o)
+  console.log(R)
+ this.setState({callResult:R})
   }
   UnlockAccount=async()=>{
    let index=this.state.selectedID
@@ -464,6 +493,9 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
             />
         <br /><br />
         {inputView2}
+        <br /><br />
+        <h1>{this.state.callResult}</h1>
+
         </div>
       )
     }
