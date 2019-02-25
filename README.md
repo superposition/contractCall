@@ -36,14 +36,4 @@ to integrate CRA with Electron.
   yarn electron-pack -mwl
   ```
   
-Contributing
-------------
-- The Linux build is well tested, Windows builds lightly tested & Mac un-tested. Testers wanted!
-- Issues & pull requests welcome! Version 2 should make reproducible builds much easier. 
 
-Changes from Version 1
-------------------
-- Integrated workflow between Electron & React
-- New UI library - official React adapters of Material Components for Web
-- Simpler architecture & fewer dependencies - specifically no more use of Redux
-- Search functionality
