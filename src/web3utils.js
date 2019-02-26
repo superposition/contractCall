@@ -1,7 +1,11 @@
+
 import TX from 'ethereumjs-tx'
 
+
+
+
+
 function CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
-    
     const tx = new TX(null, 1);
     tx.nonce = nonce
     tx.gasPrice = gasPrice
@@ -9,15 +13,13 @@ function CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
     tx.value = value
     // console.log(tx.gasPrice.toString('hex') + 'gasprice')
     console.log(pk)
-    
-    tx.to=to
+      tx.to=to
       // console.log('notcontract')
     
-    if (data.length > 2){  
-      tx.data = data
+    if(data.length>2){  
+    tx.data = data
     }
     // const pk = Buffer.from(privateKey, 'hex')
-    
     console.log(tx)
     tx.sign(pk)
     const ret="0x"+tx.serialize().toString('hex')
@@ -35,19 +37,19 @@ function CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
 
   export async function CallContractFunction(functionABI,inputarray,contract,web3,type){
     
-    var DATA = web3.eth.abi.encodeFunctionCall(functionABI,inputarray)
+    var DATA=web3.eth.abi.encodeFunctionCall(functionABI,inputarray)
+  
     const transactionObject = {
         to:contract,
         DATA,
-    }
-    console.log(transactionObject)
-    console.log(web3)
-    var result = await web3.eth.call(transactionObject)   
-    
+       }
+       console.log(transactionObject)
+       console.log(web3)
+    var result=await web3.eth.call(transactionObject)   
     if(typeof(result)==='string'){
       console.log(type[0])
-      result =web3.eth.abi.decodeParameter(type[0],result )
-      console.log(result)
+     result =web3.eth.abi.decodeParameter(type[0],result )
+    console.log(result)
     }
     return result
   }
