@@ -16,11 +16,11 @@ function createWindow() {
 
     let winWidth = Math.floor(scrWidth/2)
     let winHeight = Math.floor(scrHeight*3/4)
-    /*
+
     if(isDev){
-        winWidth = 1200
+        winWidth = 400
         winHeight = 600
-    }*/
+    }
 
     mainWindow = new BrowserWindow({
         width: winWidth, 

@@ -5,27 +5,25 @@ import wallet from "ethereumjs-wallet"
 import Web3 from "web3"
 import { closestIndexTo } from 'date-fns';
 import back from './assets/Background/Gradient/Purple.svg'
+//import logo from './assets/Wordmark/B/Gradient.svg'
 import logo from './assets/Wordmark/B/Gradient.svg'
-import {CallContractFunction ,SendWeb3Transaction,FormatABI,formatOutputs} from './web3utils.js'
+
+import {
+  CallContractFunction ,
+  SendWeb3Transaction,
+  FormatABI,
+  formatOutputs
+} from './web3utils.js'
+
 const path = window.require('path');
 const fs = window.require('fs');
-<<<<<<< HEAD
-const imgWidth = 75
+const imgWidth = 25
 
-=======
-const imgWidth = 100
 var web3 = new Web3(new Web3.providers.HttpProvider("https://balehu-chain.balehu.com"))
->>>>>>> bfc47969cd3ae1c19e57db617f9df31dc4f6d1df
+
 //  border: solid 1px blue;
 const Contract_DIR = './src/abi';
 const Wallet_DIR = './src/wallets'
-
-const Sidebar = styled.div`
-  grid-area: sidebar;
-  grid-area: 2/1/5/5;
-  padding: 15px;
-  text-align: left;
-`;
 
 const GlobalStyle = createGlobalStyle`
   body, html {
@@ -34,29 +32,39 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-//border: solid 2px red;
 const Main = styled.main`
-background-image: url(${back});
+  border: solid 2px red;
+  background-image: url(${back});
   display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(15, 1em);
+  grid-template-rows: repeat(36, 1em);
   background-color: #2d2d2d;
-`;
-
-//  border: solid 2px indigo;
-const Content = styled.div`
-  grid-area: 2/5/20/20;
-  padding: 15px;
 `;
 
 //  border: solid 1px blue
 const Header = styled.div`
   grid-area: header;
-  grid-area: 1/1/1/18;
+  grid-area: 1/12/20/20;
   padding: 45px;
   text-align: left;
 `;
 
+const Sidebar = styled.div`
+  border: inset 2px black;
+  grid-area: sidebar;
+  grid-area: 7/2/2/12;
+  padding: 5px;
+  text-align: left;
+  box-shadow: 5px 5px 3px #000;
+  background-color: #00000;
+`;
+//  border: solid 2px indigo;
+const Content = styled.div`
+  grid-area: 8/2/30/19;
+  padding: 5px;
+  //border: solid 1px blue;
+  box-shadow: 5px 5px 3px #000;
+`;
 const Papaya = styled.input`
   min-width: 200px;
   box-shadow: 10px 16px 32px 0px rgba(0,0,0,0.2);
@@ -67,112 +75,157 @@ const Papaya = styled.input`
   border: none;
   border-radius: 3px;
 `;
-
 const customStyles = {
-
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: '1px dotted pink',
-    color: 'black',
-    padding: 20,
-  }),
-
-  control: () => ({
-    // none of react-select's styles are passed to <Control />
-    width: 100,
-  }),
-
+  option: (provided, state) => (
+    {
+      ...provided,
+      borderBottom: '5px dotted ink',
+      color: 'black',
+      padding: 5,
+    }
+  ),
+  control: () => (
+    {
+      // none of react-select's styles are passed to <Control />
+      width: 200,
+    }
+  ),
   singleValue: (provided, state) => {
-
     const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
-
     return { ...provided, opacity, transition };
   }
 }
 
+// STYLE KEYS
+// clearIndicator
+// container
+// control
+// dropdownIndicator
+// group
+// groupHeading
+// indicatorsContainer
+// indicatorSeparator
+// input
+// loadingIndicator
+// loadingMessage
+// menu
+// menuList
+// menuPortal
+// multiValue
+// multiValueLabel
+// multiValueRemove
+// noOptionsMessage
+// option
+// placeholder
+// singleValue
+// valueContainer
+// console.log(fs)
+// console.log(wallets)
+// console.log(wallets)
+// console.log(wallets.accounts[i])
+// console.log(accountlist)
+// console.log("items: " + items[0].slice(0, -5));
+
 class Display extends Component {
-
   componentDidMount() {
-   // console.log(fs)
-    let wallets = fs.readFileSync('./src/wallets/accounts.json', 'utf8')
-    //console.log(wallets)
-    wallets=JSON.parse(wallets)
-   // console.log(wallets)
-   let  accountlist=[]
-    for(var i=0;i<wallets.accounts.length;i++){
-      //console.log(wallets.accounts[i])
-      let temp="0x"+wallets.accounts[i].address
-      accountlist.push({"value":i,"label":temp})
-    }
-    //console.log(accountlist)
-    this.setState({accounts:wallets,addresslist:accountlist})
-
-    fs.readdir(Contract_DIR, (err, items) => {
-     // console.log("items: " + items[0].slice(0, -5));
-      let temp = []
-      for (var i = 0; i < items.length; i++) {
-        temp[i] = { value: items[i].slice(0, -5), label: items[i].slice(0, -5) }
+  let wallets = fs.readFileSync(
+    './src/wallets/accounts.json', 
+    'utf8'
+  )
+  let accountlist = []
+  wallets=JSON.parse(wallets)
+  for(var i = 0; i < wallets.accounts.length; i++){
+    let temp = "0x" + wallets.accounts[i].address
+    accountlist.push(
+      {
+        "value": i,
+        "label": temp
       }
-     // console.log(temp)
-      this.setState({ contracts: temp })
-    });
-  } 
-
-  SaveWallet=()=>{
-    var buf=Buffer.from(this.state.privatekey,'hex')
-    var w= wallet.fromPrivateKey(buf)
-    let  address=w.getAddressString()
-    let Accounts=this.state.accounts
+    )
+  }
+  this.setState(
+    {
+      accounts : wallets,
+      addresslist : accountlist
+    }
+  )
+  fs.readdir(Contract_DIR, (err, items) => {
+    let temp = []
+    for (var i = 0; i < items.length; i++) {
+      temp[i] = { value: items[i].slice(0, -5), label: items[i].slice(0, -5) }
+    } 
+    this.setState(
+      { 
+        contracts: temp
+      }
+    )
+  });
+} 
+// console.log(temp)
+  SaveWallet = () => {
+    var buf = Buffer.from(this.state.privatekey,'hex')
+    var w = wallet.fromPrivateKey(buf)
+    let  address = w.getAddressString()
+    let Accounts = this.state.accounts
     console.log(this.state.password)
-   let V3=w.toV3(this.state.password)
-   Accounts.accounts.push(V3)
-   this.setState({accounts:Accounts})
-   console.log(Accounts)
-   let V3String=JSON.stringify(Accounts)
-   const data = new Uint8Array(Buffer.from(V3String));
-fs.writeFile('./src/wallets/accounts.json', data, (err) => {
-  if (err) throw err;
-  console.log('The file has been saved!');
-});
-}
-  SaveContract=()=>{
-   let ABI=this.state.temporaryABI;
-   let address=this.state.TempAddress;
-  
-   let name=this.state.ContractSaveName
-   console.log(ABI)
-   ABI.address=address
-   console.log(ABI)
-   let StringABI=JSON.stringify(ABI)
-   const data = new Uint8Array(Buffer.from(StringABI));
-   let path='./src/abi/'+name+'.json'
-   fs.writeFile(path, data, (err) => {
-     if (err) throw err;
-     console.log('The file has been saved!');
-   });
+    let V3 = w.toV3(this.state.password)
+    Accounts.accounts.push(V3)
+    
+    this.setState(
+      {
+        accounts:Accounts
+      }
+    )
+    console.log(Accounts)
+    let V3String=JSON.stringify(Accounts)
+    const data = new Uint8Array(Buffer.from(V3String));
 
+    fs.writeFile('./src/wallets/accounts.json', data, (err) => {
+      if (err) throw err;
+      console.log('The file has been saved!');
+    });
+  }
+
+  SaveContract = () => {
+    let ABI=this.state.temporaryABI;
+    let address=this.state.TempAddress;
+    let name=this.state.ContractSaveName
+    console.log(ABI)
+    
+    ABI.address=address
+    console.log(ABI)
+    
+    let StringABI=JSON.stringify(ABI)
+    const data = new Uint8Array(Buffer.from(StringABI));
+    
+    let path = './src/abi/'+name+'.json'
+    fs.writeFile(path, data, (err) => {
+      if (err) throw err;
+      console.log('The file has been saved!');
+    });
   }
  
-  SaveFile =async(event)=> {
+  SaveFile = async(event) => {
     let file = event.target.files[0];
     console.log(file);
-    let f= new FileReader()
+    let f = new FileReader()
     f.onload = this.onReaderLoad;
     await f.readAsText(file)
-    
-
   }
-  onReaderLoad=(event)=>{
+  onReaderLoad = (event) => {
     console.log(event.target.result);
     var obj = JSON.parse(event.target.result);
-    let temp={"abi":'',"address":''}
-    temp.abi=obj.abi
+    
+    let temp = {
+      "abi":'',
+      "address":''
+    }
+    temp.abi = obj.abi
     console.log(obj.abi)
     console.log(temp)
     this.setState({temporaryABI:temp})
     //alert_data(obj.name, obj.family);
-
   }
   state = {
 
@@ -215,53 +268,39 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
         label: 'send'
       }
     ],
+
     getfunctions: [{
       value: '',
       label: '',
     }],
+
     functionabi: [],
     viewfunctionABI: [],
+
     selectedAccount: "0x",
-
     selectedID:'',
-
-    selectedContract: "No Contract Selcted",
-
+    selectedContract: "Select Contract ABI",
     selectedFunction: "No Function Selcted",
-
     selectedFunctionABI:{"inputs":[]},
-
     selectedContractAddress:'',
-
     selectedViewFunction: "No Function Selcted",
-
     selectedViewFunctionABI:{"inputs":[]},
 
     password: '',
-
     files: '',
-
     privatekey:'',
-
     passworkd:'',
-
     addresslist:'',
-
     addressmap:'',
-
     temporaryABI:'',
-
     ContractSaveName:'',
-
     TempAddress:'',
-
     FuncInputArray:[],
-
-    ViewInputArray:[],
-    
+    ViewInputArray:[],  
     UnlockedUserAddress:'',
-
-    callResult:''
+    callResult:'',
+    
+    isDisabled: false
     
   }
 
@@ -294,10 +333,14 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       })
     }
   }
-
   handleAccount = (event) => {
     console.log(event)
-    this.setState({selectedAccount:event.label,selectedID:event.value})
+    this.setState(
+      {
+        selectedAccount : event.label,
+        selectedID:event.value
+      }
+    )
   }
 
   handleFile = (event) => {
@@ -307,18 +350,22 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     let selectView = []
     let selectMut = []
     let mutableFunctions = []
+    
     console.log(abi)
     let abiPath = path.join(Contract_DIR, abi)
     console.log(abiPath)
     let data = ""
+
     try {
       data = fs.readFileSync(abiPath, 'utf8')
     } catch (err) {
       console.log(err)
     }
+
     data = JSON.parse(data)
     console.log(typeof (data))
     console.log(data)
+
     for (var i = 0; i < data.abi.length; i++) {
       if (data.abi[i].stateMutability === "view") {
         console.log(data.abi[i] + "view function")
@@ -331,7 +378,6 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       }
       console.log(viewFunctions)
       console.log(selectMut)
-
     }
     this.setState({ selectedContract: event.value, functions: selectMut, getfunctions: selectView, functionabi: mutableFunctions, viewfunctionABI: viewFunctions,selectedContractAddress:data.address }, console.log(this.state))
 
@@ -346,32 +392,37 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     console.log(func.inputs)
     this.setState({ selectedFunction: event.value,selectedFunctionABI:func })
   }
+
   handleViewFunction = async(event) => {
     console.log(event.value)
     let func=this.state.viewfunctionABI[event.value]
     console.log(func)
     this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
+    
     if(func.inputs.length===0){
+      
       console.log("no inputs")
-      var funcName=func.name+"()"
+      var funcName = func.name + "()"
       
      
-     var DATA=web3.eth.abi.encodeFunctionSignature(funcName)
+      var DATA=web3.eth.abi.encodeFunctionSignature(funcName)
        
-     const transactionObject = {
-      to:this.state.selectedContractAddress,
-      DATA,
-     }
-    console.log(transactionObject)
-     var result=await web3.eth.call(transactionObject)
-     console.log(result)
-    if(typeof(result)==='string'){
-      let type=formatOutputs(func)
-      console.log(type[0])
-     result =web3.eth.abi.decodeParameter(type[0],result )
-    console.log(result)
-    this.setState({callResult:result})
-    }
+      const transactionObject = {
+        to : this.state.selectedContractAddress,
+        DATA,
+      }
+
+      console.log(transactionObject)
+      var result=await web3.eth.call(transactionObject)
+      console.log(result)
+      
+      if(typeof(result)==='string'){
+        let type=formatOutputs(func)
+        console.log(type[0])
+        result =web3.eth.abi.decodeParameter(type[0],result )
+        console.log(result)
+        this.setState({callResult:result})
+      }
     }
   }
 
@@ -384,35 +435,52 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     console.log(state)
   };
 
-  sendFunction=()=>{
-  let inputs=this.state.FuncInputArray
-  let abi=this.state.selectedFunctionABI
-  let Contract=this.state.selectedContractAddress
-  let from=this.state.UnlockedUserAddress
-  let f=FormatABI(abi)
-  //SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
+  sendFunction = () => {
+    let inputs = this.state.FuncInputArray
+    let abi = this.state.selectedFunctionABI
+    let Contract = this.state.selectedContractAddress
+    let from = this.state.UnlockedUserAddress
+    let f = FormatABI(abi)
+    //SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
   }
-  callFunction=async()=>{
-  let inputs=this.state.ViewInputArray
-  let abi=this.state.selectedViewFunctionABI
-  let Contract=this.state.selectedContractAddress
-  let f=FormatABI(abi)
-  let o=formatOutputs(abi)
-  console.log(f)
-  var R= await CallContractFunction(f,inputs,Contract,web3,o)
-  console.log(R)
- this.setState({callResult:R})
-  }
-  UnlockAccount=async()=>{
-   let index=this.state.selectedID
-   let password=this.state.password
-   let encryptedwallet=this.state.accounts.accounts[index]
-   console.log(encryptedwallet+ "wallet&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-   let w= await wallet.fromV3(encryptedwallet,password)
-   console.log(w.getPrivateKeyString())
-   this.setState({privatekey:w.getPrivateKeyString()},console.log(this.state))
 
+  callFunction = async() => {
+
+    let inputs=this.state.ViewInputArray
+    let abi=this.state.selectedViewFunctionABI
+    let Contract=this.state.selectedContractAddress
+    let f=FormatABI(abi)
+    let o=formatOutputs(abi)
+    console.log(f)
+    
+    var R = await CallContractFunction(f,inputs,Contract,web3,o)
+    console.log(R)
+
+    this.setState(
+      {
+        callResult : R
+      }
+    )
   }
+
+  UnlockAccount = async() => {
+    
+    let index = this.state.selectedID
+    let password = this.state.password
+    let encryptedwallet = this.state.accounts.accounts[index]
+    
+    console.log(encryptedwallet + "wallet&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    let w = await wallet.fromV3( encryptedwallet,password )  
+    console.log(w.getPrivateKeyString())
+
+    this.setState(
+      {
+        privatekey : w.getPrivateKeyString()
+      },
+      console.log(this.state
+    ))
+  }
+
   addToArray=(index,event)=>{
     const state = {
       ...this.state,
@@ -431,43 +499,63 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     console.log(state)
   };
   
-
-  render() {
+  render(){
 
     console.log(this.state.optionSelected)
     console.log(this.state.selectedContract)
+
     var mainView = null
     var inputView=null
     var inputView2=null
-   console.log(JSON.stringify(this.state.selectedFunctionABI) + "selecte function ABI")
+
+    console.log(JSON.stringify(this.state.selectedFunctionABI) + "selecte function ABI")
    
- if(this.state.selectedFunctionABI.inputs.length>0){
-     inputView = (
-      <form >
-          {this.state.selectedFunctionABI.inputs.map((index,key)=> (
-              <Papaya type="text" placeholder={index.name } onChange={this.addToArray.bind(this,key)}></Papaya>
-          ))}
-           <br /><br />
-          <button type="button" onClick={this.sendFunction}>Send Transaction</button>
-      </form>
-    )
-          }
-  if(this.state.selectedViewFunctionABI.inputs.length>0){
-    inputView2 = (
-      <form >
-          {this.state.selectedViewFunctionABI.inputs.map((index,key) => (
-              <Papaya type="text" placeholder={index.name} onChange={this.addToViewArray.bind(this,key)}></Papaya>
-          ))}
-           <br /><br />
-          <button type="button" onClick={this.callFunction}>Send</button>
-      </form>
-    )
-          }
+    if(this.state.selectedFunctionABI.inputs.length>0){
+
+        inputView = (
+          <form >
+            {
+              this.state.selectedFunctionABI.inputs.map(
+                (index,key) => (
+                    <Papaya 
+                      type="text" 
+                      placeholder={index.name } 
+                      onChange={this.addToArray.bind(this,key)}>
+                    </Papaya>
+                )
+              )  
+            }
+            <br /><br />
+            <button type="button" onClick={this.sendFunction}>Send Transaction</button>
+        </form>
+        )
+    }
+
+    if (this.state.selectedViewFunctionABI.inputs.length > 0){
+      inputView2 = (
+        <form >
+            {
+              this.state.selectedViewFunctionABI.inputs.map(
+                (index,key) => (
+                  <Papaya 
+                    type="text" 
+                    placeholder={index.name} 
+                    onChange ={this.addToViewArray.bind(this,key)}>
+                  </Papaya>
+                 )
+              )
+            }
+            <br /><br />
+            <button type="button" onClick={this.callFunction}>Send</button>
+        </form>
+      )
+    }
     console.log(inputView)
+
     if (this.state.optionSelected === 1) {
       mainView = (
         <div data-tid="container">
-          <h2>Call Contract Function</h2>
+          
 
           ABI<br /><br />
           <Select
@@ -496,6 +584,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
             options={this.state.getfunctions}
             styles={customStyles}
             placeholder={this.state.selectedViewFunction}
+
             />
         <br /><br />
         {inputView2}
@@ -505,6 +594,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
         </div>
       )
     }
+
     if (this.state.optionSelected === 2) {
       mainView = (
         <div>
@@ -517,6 +607,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
         
         </div>)
     }
+
     if (this.state.optionSelected === 3) {
       mainView = (
         <div>
@@ -536,6 +627,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
         </div>)
 
     }
+
     if (this.state.optionSelected === 4) {
       mainView = (
         <div>
@@ -555,7 +647,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       <React.Fragment>
         <GlobalStyle />
         <Main>
-          <Header> <img width={imgWidth} src={logo} alt={"logo-image"} /></Header>
+          <Header><img width={imgWidth} src={logo} alt={"logo-image"} /></Header>
           <Content>
             <div>
               {mainView}
@@ -563,11 +655,11 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
             </div>
           </Content>
           <Sidebar>
-            <h1>Select Mode</h1>
             <Select
               options={this.state.options}
               onChange={this.onSelcted}
-              styles={customStyles} />
+              styles={customStyles}
+              placeholder="Select Mode" />
           </Sidebar>
         </Main>
       </React.Fragment>
@@ -576,3 +668,5 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
 }
 
 export default Display;
+
+//<img width={imgWidth} src={logo} alt={"logo-image"} />
