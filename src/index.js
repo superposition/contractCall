@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 
 import Display from "./Display"
 import * as serviceWorker from './serviceWorker';
+const divStyle = {
+  'background-color': '#2d2d2d',
+};
 function App() {
     return (
-      <Display/>
+      <Display style={divStyle}/>
     )
   }
   

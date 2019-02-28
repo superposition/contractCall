@@ -27,12 +27,19 @@ function CreateTX(nonce,gasPrice,gasLimit,value,to,data,pk){
   }
 
   export async function SendWeb3Transaction(functionABI,inputarray,fromAddress,PrivateKey,contract,web3){
+    try{
       var nonce= await web3.eth.getTransactionCount(fromAddress)
       var DATA=web3.eth.abi.encodeFunctionCall(functionABI,inputarray)
-      let TXData=CreateTX(nonce,'0x4a817c800',1000000,0,contract,DATA,PrivateKey)
-      let hash= await web3.ethsendSignedTransaction(TXData)
+      PrivateKey=PrivateKey.slice(2)
+      var buf=Buffer.from(PrivateKey,'hex')
+      let TXData=CreateTX(nonce,'0x4a817c800',1000000,0,contract,DATA,buf)
+      let hash= await web3.eth.sendSignedTransaction(TXData)
       console.log(hash)
-
+    }catch(err){
+      console.log(err)
+      alert(err)
+    }
+      
   }
 
   export async function CallContractFunction(functionABI,inputarray,contract,web3,type){

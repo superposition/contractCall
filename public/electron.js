@@ -26,7 +26,7 @@ function createWindow() {
         width: winWidth, 
         height: winHeight, 
         x: scrWidth-winWidth-50,
-        y: scrHeight-winHeight-100,
+        y: scrHeight-winHeight,
         resizable:false, 
         fullscreenable:false,
         title:"Contract Dash Board",

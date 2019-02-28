@@ -9,13 +9,9 @@ import logo from './assets/Wordmark/B/Gradient.svg'
 import {CallContractFunction ,SendWeb3Transaction,FormatABI,formatOutputs} from './web3utils.js'
 const path = window.require('path');
 const fs = window.require('fs');
-<<<<<<< HEAD
 const imgWidth = 75
 
-=======
-const imgWidth = 100
 var web3 = new Web3(new Web3.providers.HttpProvider("https://balehu-chain.balehu.com"))
->>>>>>> bfc47969cd3ae1c19e57db617f9df31dc4f6d1df
 //  border: solid 1px blue;
 const Contract_DIR = './src/abi';
 const Wallet_DIR = './src/wallets'
@@ -38,8 +34,8 @@ const GlobalStyle = createGlobalStyle`
 const Main = styled.main`
 background-image: url(${back});
   display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(10, mimmax(200px,autox));
+  grid-template-rows: repeat(5,minmax(160px, auto));
   background-color: #2d2d2d;
 `;
 
@@ -56,7 +52,15 @@ const Header = styled.div`
   padding: 45px;
   text-align: left;
 `;
+const Button= styled.button`
+  height: 40px;    
+  width: 200px;    
+  background: linear-gradient(39.24deg, #A2D75E 0%, #6EC7D6 100%);
+  padding: 0.3em;
+  margin: 0.4em;
+  border-radius: 3px;
 
+`;
 const Papaya = styled.input`
   min-width: 200px;
   box-shadow: 10px 16px 32px 0px rgba(0,0,0,0.2);
@@ -120,26 +124,50 @@ class Display extends Component {
   } 
 
   SaveWallet=()=>{
+    try{
+      console.log('creating bufer')
     var buf=Buffer.from(this.state.privatekey,'hex')
+    console.log("buffer created")
     var w= wallet.fromPrivateKey(buf)
     let  address=w.getAddressString()
     let Accounts=this.state.accounts
-    console.log(this.state.password)
-   let V3=w.toV3(this.state.password)
-   Accounts.accounts.push(V3)
-   this.setState({accounts:Accounts})
-   console.log(Accounts)
-   let V3String=JSON.stringify(Accounts)
-   const data = new Uint8Array(Buffer.from(V3String));
-fs.writeFile('./src/wallets/accounts.json', data, (err) => {
-  if (err) throw err;
-  console.log('The file has been saved!');
-});
+    let Addresslist=this.state.addresslist
+    //let state={...this.state}
+
+    
+    if((this.state.password===this.state.confirmpassword)){
+     
+      let V3=w.toV3(this.state.password)
+      Accounts.accounts.push(V3)
+      Addresslist.push({"value":this.state.addresslist.length,"label":address})
+      this.setState({accounts:Accounts,addresslist:Addresslist})
+      
+      let V3String=JSON.stringify(Accounts)
+      
+     
+      
+      const data = new Uint8Array(Buffer.from(V3String));
+    fs.writeFile('./src/wallets/accounts.json', data, (err) => {
+      if (err) throw err;
+      console.log('The file has been saved!');
+      alert("private key has been securely stored")
+      
+      });
+     // this.setState(state)
+    }else{
+      alert("passwords do not match")
+    }
+  }catch(err){
+    console.log(err)
+    alert(err)
+  }  
 }
   SaveContract=()=>{
    let ABI=this.state.temporaryABI;
    let address=this.state.TempAddress;
-  
+   let Contracts=this.state.contracts
+  Contracts.push({value:name,label:name})
+  console.log(Contracts)
    let name=this.state.ContractSaveName
    console.log(ABI)
    ABI.address=address
@@ -150,8 +178,9 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
    fs.writeFile(path, data, (err) => {
      if (err) throw err;
      console.log('The file has been saved!');
+     this.setState({contract:Contracts})
    });
-
+    
   }
  
   SaveFile =async(event)=> {
@@ -211,8 +240,8 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
 
     functions: [
       {
-        value: 'Send',
-        label: 'send'
+        value: '',
+        label: ''
       }
     ],
     getfunctions: [{
@@ -220,7 +249,9 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       label: '',
     }],
     functionabi: [],
+
     viewfunctionABI: [],
+
     selectedAccount: "0x",
 
     selectedID:'',
@@ -261,7 +292,9 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     
     UnlockedUserAddress:'',
 
-    callResult:''
+    callResult:'',
+
+    confirmpassword:''
     
   }
 
@@ -338,41 +371,45 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
   }
 
   handleFunction = (event) => {
-    console.log(event.value)
-    console.log(this.state.functionabi[event.value])
-    let func=this.state.functionabi[event.value]
-    console.log(func)
-    //console.log(web3.eth.abi.encodeFunctionCall(func)+" encoded abi")
-    console.log(func.inputs)
-    this.setState({ selectedFunction: event.value,selectedFunctionABI:func })
+    console.log(event)
+    if(event.value!==""){
+      console.log(this.state.functionabi[event.value])
+      let func=this.state.functionabi[event.value]
+      console.log(func)
+      //console.log(web3.eth.abi.encodeFunctionCall(func)+" encoded abi")
+      console.log(func.inputs)
+      this.setState({ selectedFunction: event.value,selectedFunctionABI:func })
+    }
   }
   handleViewFunction = async(event) => {
-    console.log(event.value)
-    let func=this.state.viewfunctionABI[event.value]
-    console.log(func)
-    this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
-    if(func.inputs.length===0){
-      console.log("no inputs")
-      var funcName=func.name+"()"
+    console.log(event)
+    if((event.value)!==""){
+      let func=this.state.viewfunctionABI[event.value]
+      console.log(func)
+      this.setState({ selectedViewFunction: event.value,selectedViewFunctionABI:func })
+      if(func.inputs.length===0){
+        console.log("no inputs")
+        var funcName=func.name+"()"
       
      
-     var DATA=web3.eth.abi.encodeFunctionSignature(funcName)
+        var DATA=web3.eth.abi.encodeFunctionSignature(funcName)
        
-     const transactionObject = {
-      to:this.state.selectedContractAddress,
-      DATA,
-     }
-    console.log(transactionObject)
-     var result=await web3.eth.call(transactionObject)
-     console.log(result)
-    if(typeof(result)==='string'){
-      let type=formatOutputs(func)
-      console.log(type[0])
-     result =web3.eth.abi.decodeParameter(type[0],result )
-    console.log(result)
-    this.setState({callResult:result})
-    }
-    }
+        const transactionObject = {
+          to:this.state.selectedContractAddress,
+          DATA,
+         }
+        console.log(transactionObject)
+        var result=await web3.eth.call(transactionObject)
+        console.log(result)
+      if(typeof(result)==='string'){
+        let type=formatOutputs(func)
+        console.log(type[0])
+        result =web3.eth.abi.decodeParameter(type[0],result )
+        console.log(result)
+        this.setState({callResult:result})
+       }
+      }
+    }  
   }
 
   handleChange = (fieldName, event) => {
@@ -384,13 +421,14 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
     console.log(state)
   };
 
-  sendFunction=()=>{
+  sendFunction=async()=>{
   let inputs=this.state.FuncInputArray
   let abi=this.state.selectedFunctionABI
   let Contract=this.state.selectedContractAddress
   let from=this.state.UnlockedUserAddress
   let f=FormatABI(abi)
-  //SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
+  let hash=await SendWeb3Transaction(abi,inputs,from,this.state.privatekey,Contract,web3)
+  //alert("transactioin has bee submitted. Your TX is "+hash)
   }
   callFunction=async()=>{
   let inputs=this.state.ViewInputArray
@@ -408,9 +446,16 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
    let password=this.state.password
    let encryptedwallet=this.state.accounts.accounts[index]
    console.log(encryptedwallet+ "wallet&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+   try{
    let w= await wallet.fromV3(encryptedwallet,password)
+   this.setState({privatekey:w.getPrivateKeyString(),UnlockedUserAddress:w.getAddressString()},console.log(this.state))
    console.log(w.getPrivateKeyString())
-   this.setState({privatekey:w.getPrivateKeyString()},console.log(this.state))
+   } catch(error){
+     console.log(error)
+     alert("Wrong Password Try again")
+   }
+   
+   
 
   }
   addToArray=(index,event)=>{
@@ -448,7 +493,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
               <Papaya type="text" placeholder={index.name } onChange={this.addToArray.bind(this,key)}></Papaya>
           ))}
            <br /><br />
-          <button type="button" onClick={this.sendFunction}>Send Transaction</button>
+          <Button type="button" onClick={this.sendFunction}>Send Transaction</Button>
       </form>
     )
           }
@@ -459,7 +504,7 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
               <Papaya type="text" placeholder={index.name} onChange={this.addToViewArray.bind(this,key)}></Papaya>
           ))}
            <br /><br />
-          <button type="button" onClick={this.callFunction}>Send</button>
+          <Button type="button" onClick={this.callFunction}>Send</Button>
       </form>
     )
           }
@@ -509,11 +554,14 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       mainView = (
         <div>
           <h3>upload a new private key</h3>
-          <input type='text' value={this.state.privatekey} onChange={this.handleChange.bind(this,'privatekey')}/>
+          <Papaya type='text' value={this.state.privatekey} onChange={this.handleChange.bind(this,'privatekey')}/>
           <h3>Enter a Key Password</h3>
-          <input type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
+          <Papaya type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
           <br /><br />
-          <button type="button" onClick={this.SaveWallet}>Save Wallet</button>
+          <h3>Confirm your Password</h3>
+          <Papaya type='text' value={this.state.confirmpassword} onChange={this.handleChange.bind(this,'confirmpassword')}/>
+          <br /><br />
+          <Button type="button" onClick={this.SaveWallet}>Save Wallet</Button>
         
         </div>)
     }
@@ -527,12 +575,14 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
             onChange={this.handleAccount}
             options={this.state.addresslist}
             styles={customStyles}
+            value={this.state.selectedAccount}
           />
           <br />
           <h3>Enter your Password</h3>
-          <input type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
+          <Papaya type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
           <br /><br />
-          <button type="button" onClick={this.UnlockAccount}>Unlock</button>
+        
+          <Button type="button" onClick={this.UnlockAccount}>Unlock</Button>
         </div>)
 
     }
@@ -542,10 +592,11 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
           <h3>upload the contract ABI</h3>
           <input type='file' onChange={this.SaveFile} />
           <h3>Enter the contract Address</h3>
-          <input type='text' onChange={this.handleChange.bind(this,'TempAddress')}/>
+          <Papaya type='text' onChange={this.handleChange.bind(this,'TempAddress')}/>
           <h3>Enter the contract Name</h3>
-          <input type='text' onChange={this.handleChange.bind(this,'ContractSaveName')}/>
-          <button type="button" onClick={this.SaveContract}>Save it</button>
+          <Papaya type='text' onChange={this.handleChange.bind(this,'ContractSaveName')}/>
+          <br /><br />
+          <Button type="button" onClick={this.SaveContract}>Save it</Button>
         </div>)
       console.log("changing mainview")
     }
@@ -555,7 +606,10 @@ fs.writeFile('./src/wallets/accounts.json', data, (err) => {
       <React.Fragment>
         <GlobalStyle />
         <Main>
-          <Header> <img width={imgWidth} src={logo} alt={"logo-image"} /></Header>
+          <Header> <img width={imgWidth} src={logo} alt={"logo-image"} />
+          <h3>Currently Unlocked Account: {this.state.UnlockedUserAddress}</h3>
+          
+          </Header>
           <Content>
             <div>
               {mainView}
