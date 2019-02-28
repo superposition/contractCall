@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 const Main = styled.main`
 background-image: url(${back});
   display: grid;
-  grid-template-columns: repeat(10, mimmax(200px,autox));
+  grid-template-columns: repeat(10, mimmax(100px,auto));
   grid-template-rows: repeat(5,minmax(160px, auto));
   background-color: #2d2d2d;
 `;
@@ -48,8 +48,8 @@ const Content = styled.div`
 //  border: solid 1px blue
 const Header = styled.div`
   grid-area: header;
-  grid-area: 1/1/1/18;
-  padding: 45px;
+  grid-area: 2/1/1/18;
+  padding: 15px;
   text-align: left;
 `;
 const Button= styled.button`
@@ -126,7 +126,7 @@ class Display extends Component {
   SaveWallet=()=>{
     try{
       console.log('creating bufer')
-    var buf=Buffer.from(this.state.privatekey,'hex')
+    var buf=Buffer.from(this.state.uploadprivatekey,'hex')
     console.log("buffer created")
     var w= wallet.fromPrivateKey(buf)
     let  address=w.getAddressString()
@@ -140,7 +140,7 @@ class Display extends Component {
       let V3=w.toV3(this.state.password)
       Accounts.accounts.push(V3)
       Addresslist.push({"value":this.state.addresslist.length,"label":address})
-      this.setState({accounts:Accounts,addresslist:Addresslist})
+      this.setState({accounts:Accounts,addresslist:Addresslist,uploadprivatekey:'',password:'',confirmpassword:''})
       
       let V3String=JSON.stringify(Accounts)
       
@@ -274,7 +274,9 @@ class Display extends Component {
 
     privatekey:'',
 
-    passworkd:'',
+    uploadprivatekey:'',
+
+    password:'',
 
     addresslist:'',
 
@@ -448,8 +450,9 @@ class Display extends Component {
    console.log(encryptedwallet+ "wallet&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
    try{
    let w= await wallet.fromV3(encryptedwallet,password)
-   this.setState({privatekey:w.getPrivateKeyString(),UnlockedUserAddress:w.getAddressString()},console.log(this.state))
+   this.setState({privatekey:w.getPrivateKeyString(),UnlockedUserAddress:w.getAddressString(),password:''},console.log(this.state))
    console.log(w.getPrivateKeyString())
+   alert("account "+w.getAddressString()+ " has been unlocked")
    } catch(error){
      console.log(error)
      alert("Wrong Password Try again")
@@ -554,7 +557,7 @@ class Display extends Component {
       mainView = (
         <div>
           <h3>upload a new private key</h3>
-          <Papaya type='text' value={this.state.privatekey} onChange={this.handleChange.bind(this,'privatekey')}/>
+          <Papaya type='text' value={this.state.uploadprivatekey} onChange={this.handleChange.bind(this,'uploadprivatekey')}/>
           <h3>Enter a Key Password</h3>
           <Papaya type='text' value={this.state.password} onChange={this.handleChange.bind(this,'password')}/>
           <br /><br />
@@ -610,6 +613,7 @@ class Display extends Component {
           <h3>Currently Unlocked Account: {this.state.UnlockedUserAddress}</h3>
           
           </Header>
+          
           <Content>
             <div>
               {mainView}
